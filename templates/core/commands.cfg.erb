@@ -1,0 +1,9 @@
+# This file is managed by puppet! Do not change!
+<% if @commands.is_a?(Hash) -%>
+<% @commands.sort.each do |nestedarray| -%>
+define command {
+  command_name  <%= nestedarray[0] %>
+  command_line  <%= @checkscript %> <%= nestedarray[1] %>
+}
+<% end -%>
+<% end -%>

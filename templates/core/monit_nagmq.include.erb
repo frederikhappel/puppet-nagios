@@ -1,0 +1,5 @@
+# This file is managed by puppet! Do not change!
+if failed host <%= @pull_bind_real %> port <%= @pull_port %> for 3 cycles then restart
+<% if !@reply_bind.nil? -%>
+if failed host <%= @reply_bind_real %> port <%= @reply_port %> for 3 cycles then restart
+<% end -%>

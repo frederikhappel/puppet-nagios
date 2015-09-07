@@ -1,0 +1,64 @@
+#!/usr/bin/perl -T
+use strict;
+use warnings;
+use Net::XMPP;
+use Getopt::Std;
+
+my %opts;
+getopts('f:p:r:t:m:', \%opts);
+
+my $from = $opts{f} || '<%= @user %>';
+my $password = $opts{p} || '<%= @pass %>';
+my $resource = $opts{r} || '<%= @resource %>';
+my $recipients = $opts{t} or usage();
+my $message = $opts{m} or usage();
+
+# split username and componentname
+unless ($from =~ m/(.*)@(.*)/gi) {
+  usage();
+}
+my ($username, $componentname) = ($1,$2);
+
+# establish connection to google talk servers
+my $conn = Net::XMPP::Client->new;
+my $status = $conn->Connect(
+  hostname => 'talk.google.com',
+  port => 443,
+  componentname => $componentname,
+  connectiontype => 'http',
+  tls => 0,
+  ssl => 1,
+);
+
+# Change hostname
+my $sid = $conn->{SESSION}->{id};
+$conn->{STREAM}->{SIDS}->{$sid}->{hostname} = $componentname;
+
+die "Connection failed: $!" unless defined $status;
+my ( $res, $msg ) = $conn->AuthSend(
+  username => $username,
+  password => $password,
+  resource => $resource, # client name
+);
+die "Auth failed ", defined $msg ? $msg : '', " $!"
+unless defined $res and $res eq 'ok';
+
+foreach my $recipient (split(',', $recipients)) {
+  $conn->MessageSend(
+    to => $recipient,
+    resource => $resource,
+    subject => 'message via ' . $resource,
+    type => 'chat',
+    body => $message,
+  );
+}
+
+sub usage {
+  print qq{$0 - Usage
+  -f "from account" (eg nagios\@myhost.org)
+  -p password
+  -r resource (default is "nagios")
+  -t "to account" (comma separated list or people to send the message to)
+  -m "message"\n};
+  exit(1);
+}

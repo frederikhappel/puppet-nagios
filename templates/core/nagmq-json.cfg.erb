@@ -1,0 +1,12 @@
+{
+  "pull": {
+    "bind": "tcp://<%= @pull_bind %>:<%= @pull_port %>",
+    "rcvhwm": <%= @pull_hwm %>
+  },
+<% if !@reply_bind.nil? -%>
+  "reply": {
+    "bind": "tcp://<%= @reply_bind %>:<%= @reply_port %>",
+    "sndhwm":  <%= @reply_hwm %>
+  }
+<% end -%>
+}

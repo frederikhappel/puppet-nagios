@@ -1,0 +1,8 @@
+# This file is managed by puppet! Do not change!
+command[check_zombie_procs]=<%= @plugindir %>/check_procs -w 5 -c 10 -s Z
+command[check_total_procs]=<%= @plugindir %>/check_procs -w 150 -c 200 
+command[check_users]=<%= @plugindir %>/check_users -w $ARG1$ -c $ARG2$
+command[check_load]=<%= @plugindir %>/check_load -w $ARG1$ -c $ARG2$
+command[check_procs]=<%= @plugindir %>/check_procs -w $ARG1$ -c $ARG2$ -s $ARG3$
+command[check_http_uri]=<%= @plugindir %>/check_http -H $ARG2$ -p $ARG1$ -u $ARG3$
+command[check_https_uri]=<%= @plugindir %>/check_http -H $ARG2$ -p $ARG1$ -u $ARG3$ -S

@@ -1,0 +1,22 @@
+# additional configuration (template nagios/gui/apache_vhost.erb)
+ScriptAlias /<%= @service_name %>/cgi-bin "<%= @libexecdir %>/cgi"
+<Directory "<%= @libexecdir %>/cgi">
+  Options ExecCGI
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+</Directory>
+
+Alias /<%= @service_name %> "/usr/share/<%= @service_name %>/"
+<Directory "/usr/share/<%= @service_name %>/">
+  Options None
+  AllowOverride All
+  Order allow,deny
+  Allow from all
+</Directory>
+
+# special path which require no login to check active host
+<Location /<%= @service_name %>/cgi-bin/monitorcheck.cgi>
+  Allow from all
+  Satisfy Any
+</Location>

@@ -1,0 +1,6 @@
+# This file is managed by puppet! Do not change!
+check process <%= @service_name %> with pidfile <%= @pidfile %>
+  start program = "/sbin/service <%= @service_name %> start" with timeout 5 seconds
+  stop program = "/sbin/service <%= @service_name %> stop"
+  if totalmemory is greater than 50% for 5 cycles then restart
+  include <%= scope.lookupvar('monit::params::cfgddir') %>/<%= @service_name %>_*.include

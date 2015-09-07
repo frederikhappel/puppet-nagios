@@ -1,0 +1,23 @@
+#!/usr/bin/php
+<?php
+include("xmpphp/XMPP.php");
+
+# get command line parameters
+$recipient = $argv[1];
+$message = str_replace('\n', "\n", $argv[2]);
+
+# defaults
+$server = '<%= @host %>';
+$port = <%= @port %>;
+$user = '<%= @user %>';
+$password = '<%= @pass %>';
+
+# split user (user@domain)
+$user_parts = explode('@', $user, 2);
+
+# connect to server and send message
+$conn = new XMPPHP_XMPP($server, $port, $user_parts[0], $password, 'xmpphp', $user_parts[1], $printlog=True);
+$conn->connect();
+$conn->processUntil('session_start');
+$conn->message($recipient, $message, 'chat');
+$conn->disconnect();

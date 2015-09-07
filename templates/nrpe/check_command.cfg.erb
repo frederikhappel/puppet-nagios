@@ -1,0 +1,6 @@
+# This file is managed by puppet! Do not change!
+<% if @commands.is_a?(Hash) -%>
+<% @commands.sort.each do |nestedarray| -%>
+command[<%= nestedarray[0] %>]=<%= !@sudo.nil? ? "sudo -u #{@sudo} " : '' %><%= !@env.empty? ? "#{@env.join(' ')} " : '' %><%= @checkscript %> <%= nestedarray[1] %>
+<% end -%>
+<% end -%>

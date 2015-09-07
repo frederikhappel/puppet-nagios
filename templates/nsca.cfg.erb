@@ -1,0 +1,12 @@
+# This file is managed by puppet! Do not change!
+pid_file=/var/run/nsca.pid
+server_port=<%= @port %>
+nsca_user=<%= @user %>
+nsca_group=<%= @group %>
+debug=0
+command_file=<%= @command_file %>
+alternate_dump_file=/tmp/nsca.dump
+aggregate_writes=<%= @aggregate_writes ? 1 : 0 %>
+append_to_file=0
+max_packet_age=<%= @max_packet_age_in_seconds %>
+decryption_method=1

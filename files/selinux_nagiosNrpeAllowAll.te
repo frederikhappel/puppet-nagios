@@ -1,0 +1,112 @@
+# This file is managed by puppet! Do not change!
+module nagiosNrpeAllowAll 1.8.7;
+
+require {
+  type nagios_system_plugin_t;
+  type usr_t;
+  type syslogd_t;
+  type device_t;
+  type proc_t;
+  type shell_exec_t;
+  type nagios_checkdisk_plugin_t;
+  type winbind_var_run_t;
+  type fsadm_exec_t;
+  type sudo_exec_t;
+  type urandom_device_t;
+  type random_device_t;
+  type etc_t;
+  type winbind_t;
+  type nagios_checkdisk_plugin_exec_t;
+  type bin_t;
+  type devlog_t;
+  type nagios_services_plugin_t;
+  type nagios_admin_plugin_exec_t;
+  type nagios_system_plugin_exec_t;
+  type sysctl_kernel_t;
+  type consoletype_exec_t;
+  type initrc_exec_t;
+  type initrc_var_run_t;
+  type java_exec_t;
+  type tmp_t;
+  type proc_net_t;
+  type nrpe_t;
+  type nscd_t;
+  type nscd_var_run_t;
+  type sssd_t;
+  type sssd_var_lib_t;
+  type ldconfig_exec_t;
+  class nscd { shmempwd getpwd shmemgrp getgrp };
+  class process { setsched setrlimit execmem signull };
+  class unix_stream_socket connectto;
+  class chr_file { read write open getattr };
+  class capability { setuid sys_resource audit_write setgid dac_override dac_read_search sys_admin sys_ptrace };
+  class file { execute read getattr execute_no_trans ioctl open create write unlink };
+  class netlink_audit_socket { nlmsg_relay write create read };
+  class sock_file { write getattr };
+  class netlink_route_socket { write getattr read bind create nlmsg_read };
+  class lnk_file read;
+  class unix_dgram_socket { write create connect sendto };
+  class dir { read search write add_name remove_name };
+  class key write;
+}
+
+#============= nrpe_t ==============
+allow nrpe_t self:capability { dac_read_search dac_override sys_admin sys_ptrace audit_write };
+allow nrpe_t sudo_exec_t:file { read getattr open execute execute_no_trans };
+allow nrpe_t self:netlink_audit_socket { nlmsg_relay create };
+
+#============= nagios_checkdisk_plugin_t ==============
+allow nagios_checkdisk_plugin_t bin_t:file { read execute open getattr execute_no_trans };
+allow nagios_checkdisk_plugin_t bin_t:lnk_file read;
+allow nagios_checkdisk_plugin_t device_t:chr_file { read write open };
+allow nagios_checkdisk_plugin_t devlog_t:sock_file write;
+allow nagios_checkdisk_plugin_t etc_t:file { read getattr open ioctl };
+allow nagios_checkdisk_plugin_t fsadm_exec_t:file { read getattr open execute execute_no_trans };
+allow nagios_checkdisk_plugin_t nagios_checkdisk_plugin_exec_t:file execute_no_trans;
+allow nagios_checkdisk_plugin_t proc_t:file { read getattr open };
+allow nagios_checkdisk_plugin_t self:capability { setuid sys_resource setgid audit_write dac_override };
+allow nagios_checkdisk_plugin_t self:netlink_audit_socket { nlmsg_relay write create read };
+allow nagios_checkdisk_plugin_t self:netlink_route_socket { write getattr read bind create nlmsg_read };
+allow nagios_checkdisk_plugin_t self:process { setsched setrlimit };
+allow nagios_checkdisk_plugin_t self:unix_dgram_socket { write create connect };
+allow nagios_checkdisk_plugin_t shell_exec_t:file { read execute open getattr execute_no_trans };
+allow nagios_checkdisk_plugin_t sudo_exec_t:file { read execute open getattr execute_no_trans };
+allow nagios_checkdisk_plugin_t sysctl_kernel_t:dir search;
+allow nagios_checkdisk_plugin_t sysctl_kernel_t:file read;
+allow nagios_checkdisk_plugin_t syslogd_t:unix_dgram_socket sendto;
+allow nagios_checkdisk_plugin_t urandom_device_t:chr_file { read open };
+allow nagios_checkdisk_plugin_t usr_t:file { read getattr open ioctl };
+allow nagios_checkdisk_plugin_t winbind_t:unix_stream_socket connectto;
+allow nagios_checkdisk_plugin_t winbind_var_run_t:sock_file { write getattr };
+allow nagios_checkdisk_plugin_t nscd_t:nscd { shmempwd getpwd shmemgrp getgrp };
+allow nagios_checkdisk_plugin_t nscd_t:unix_stream_socket connectto;
+allow nagios_checkdisk_plugin_t nscd_var_run_t:sock_file write;
+allow nagios_checkdisk_plugin_t self:key write;
+allow nagios_checkdisk_plugin_t sssd_t:unix_stream_socket connectto;
+allow nagios_checkdisk_plugin_t sssd_var_lib_t:sock_file write;
+
+#============= nagios_services_plugin_t ==============
+allow nagios_services_plugin_t nagios_admin_plugin_exec_t:file { ioctl execute read open getattr execute_no_trans };
+allow nagios_services_plugin_t nagios_system_plugin_exec_t:file { read execute open execute_no_trans };
+allow nagios_services_plugin_t proc_t:dir read;
+allow nagios_services_plugin_t proc_t:file { read getattr open };
+allow nagios_services_plugin_t sysctl_kernel_t:dir search;
+allow nagios_services_plugin_t sysctl_kernel_t:file read;
+allow nagios_services_plugin_t consoletype_exec_t:file { execute execute_no_trans getattr read open };
+allow nagios_services_plugin_t initrc_exec_t:file { execute execute_no_trans getattr read open ioctl };
+allow nagios_services_plugin_t shell_exec_t:file { execute execute_no_trans getattr read open };
+allow nagios_services_plugin_t java_exec_t:file { execute execute_no_trans getattr read open };
+allow nagios_services_plugin_t self:process { execmem signull };
+allow nagios_services_plugin_t tmp_t:dir { add_name read write remove_name };
+allow nagios_services_plugin_t tmp_t:file { read write open create unlink };
+allow nagios_services_plugin_t proc_net_t:file { read getattr open };
+allow nagios_services_plugin_t random_device_t:chr_file { read getattr open };
+allow nagios_services_plugin_t initrc_var_run_t:file { read getattr open };
+allow nagios_services_plugin_t ldconfig_exec_t:file { read execute open getattr execute_no_trans };
+allow nagios_services_plugin_t tmp_t:file getattr;
+
+#============= nagios_system_plugin_t ==============
+allow nagios_system_plugin_t usr_t:file { read ioctl open getattr };
+allow nagios_system_plugin_t nscd_t:nscd { shmempwd getpwd };
+allow nagios_system_plugin_t nscd_t:unix_stream_socket connectto;
+allow nagios_system_plugin_t nscd_var_run_t:sock_file write;
